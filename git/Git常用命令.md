@@ -34,8 +34,8 @@
 
 ## 三、远程仓库
 
-* git remote add  <name>  <url> 将当前目录库
-* git push <name> <branchName> 将分枝推到远程库
+* git remote add  <name origin >  <url> 将当前目录库
+* git push <name origin > <branchName> 将分枝推到远程库
 * git remote rm <name>
 * git remote -v查看远程库信息
 * git remote rm <name> 删除远程库
