@@ -135,3 +135,102 @@ vend_name||'('||vend_country||')'
 
 #### 算术计算 + - * /
 
+## 二、修改
+
+### 1、插入INSERT
+
+```sql 
+#插入整行，不安全
+INSERT INTO table_name
+VALUES(col1_val,col2_val,col3_val);
+
+#按顺序插入
+INSERT INTO table_name (col1_name,col2_name)
+VALUES(col1_name,col2_name);
+
+#插入多行
+INSERT INTO table_name (col1_name,col2_name)
+VALUES(col1_name,col2_name),
+VALUES(col1_name,col2_name);
+
+#检索插入
+INSERT INTO table_name (col1_name,col2_name)
+SELECT col1_name,col2_name
+FROM table_name;
+```
+
+### 2、更新数据 UPDATE
+
+```sql
+UPDATE table_name
+SET col_name=col_val
+WHERE <express>
+```
+
+### 3、删除数据DELETE
+
+```sql
+DELETE FROM table_name
+WHERE cust_id = 10006;
+```
+
+## 三、创建、操作表
+
+### 1、创建表CREAT TABLE
+
+```sql
+CREAT TABLE table_name
+(
+	col1_name	col1_type	NOT NULL AUTO_INCREMENT,
+    col2_name	col2_type	NOT NULL,
+    col3_name	col3_type	NULL DEFAULT 1,
+    PRIMARY KEY (col1_name)
+)ENGINE=InnoDB
+```
+
+### 2、更新表ALTER TABLE
+
+```sql
+ALTER TABLE table_name
+#添加
+ADD col_name col_type;
+#删除
+DROP COLUMN vend_phone;
+#添加外键
+ALTER TABLE <表名>
+ADD CONSTRAINT FOREIGN KEY (<列名>)
+REFERENCES <关联表>（关联列）
+```
+
+### 3、删除表 DROP TABLE
+
+```sql
+DROP TABLE table_name
+```
+
+### 4、重命名表RENAME TABLE
+
+```sql
+RENAME TABLE old_name TO new_name;
+```
+
+### 5、创建视图
+
+```sql
+CREATE VIEW view_name AS
+SELECT 语句
+```
+
+### 6、使用索引
+
+```sql
+SELECT * FROM salaries FORCE INDEX(idx_emp_no) WHERE emp_no = 10005;
+```
+
+## 四、事务
+
+开始事务BEGIN
+
+回滚事务ROLLBACK
+
+事务确认**COMMIT**  
