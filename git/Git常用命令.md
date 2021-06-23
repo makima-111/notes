@@ -74,7 +74,7 @@
 
 ### 5、多人协作
 
-1. git clone git@github.com:michaelliao/gitskills.git 使用SSH克隆库
+1. git clone -b [branchname] git@github.com:michaelliao/gitskills.git 使用SSH克隆库
 2. git switch -c  dev origin/dev 创建本地分支
 3. git checkout -b dev origin/dev创建本地分支
 4. 修改文件

@@ -79,7 +79,7 @@ journalctl -f #实时日志
 
 # 三、常见问题
 
-### 1、docker ping不通外网  
+### 1、docker ping不通外网(报错)  
 
 #### 1）DNS配置问题
 
@@ -105,6 +105,14 @@ nameserver 172.29.52.2
 
 ```
 
+#### 2）重启docker
+
+```shell
+systemctl restart docker 
+```
+
+
+
 ### 2、容器内无法启动systemctl
 
 #### 1）权限问题
@@ -122,5 +130,5 @@ run 容器时传入   --privileged=true
 
 * 命令的绝对地址采用type [命令] 查看
 
-### 3、上传创建
+### 3、
 
