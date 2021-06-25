@@ -648,3 +648,14 @@ UPDATE  login_base_config SET value='[{"times":2, "type":"over", "token":"hfq4h2
 UPDATE  login_base_config SET value='[{"times":2, "type":"over", "token":"5jd219","fben":"n_pay_over_2"},{"times":5,  "type":"equal", "token":"sme1q0","fben":"n_pay_equal_5"}]'  where key='n_pay' and app=184;
 ```
 
+#### 7、2021/06/25 candy更新 DEBUG log配置
+
+* 增加于adjust同级Debug log
+
+```sql
+INSERT INTO login_base_config (key,value,app)
+values
+('debug_log','1',183),
+('debug_log','1',184);
+```
+

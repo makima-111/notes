@@ -26,3 +26,10 @@ server {
 nginx -sreload
 ```
 
+### 二、日志
+
+```shell
+#记录post body
+\t"$request_body"
+```
+
