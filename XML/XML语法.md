@@ -118,7 +118,7 @@ XML 元素必须遵循以下命名规则：
 - 可更容易地定义数据模型（或称数据格式）
 - 可更容易地在不同的数据类型间转换数据
 
-### 二、XSD - <schema> 元素
+### 二、XSD - schema 元素
 
 <schema> 元素是每一个 XML Schema 的根元素：
 
@@ -161,7 +161,7 @@ elementFormDefault="qualified"
 <xs:element name="xxx" type="yyy"/>
 ````
 
-### 四、XSD 属性
+#### XSD 属性
 
 简易元素无法拥有属性
 
@@ -169,7 +169,7 @@ elementFormDefault="qualified"
 <xs:attribute name="xxx" type="yyy"/>
 ```
 
-### 五、XSD 限定 / Facets
+#### XSD 限定 / Facets
 
 ##### 取值范围约束
 
@@ -317,3 +317,226 @@ elementFormDefault="qualified"
 | pattern        | 定义可接受的字符的精确序列。                              |
 | totalDigits    | 定义所允许的阿拉伯数字的精确位数。必须大于0。             |
 | whiteSpace     | 定义空白字符（换行、回车、空格以及制表符）的处理方式。    |
+
+### 四、复杂的类型
+
+#### XSD 复合元素
+
+复合元素指包含其他元素及/或属性的 XML 元素。
+
+有四种类型的复合元素：
+
+- 空元素
+- 包含其他元素的元素
+- 仅包含文本的元素
+- 包含元素和文本的元素
+
+#### 定义复合元素
+
+ "employee" 元素可以使用 type 属性，这个属性的作用是引用要使用的复合类型的名称：
+
+sequnence代表顺序
+
+```xml
+<xs:element name="employee" type="personinfo"/>
+<xs:element name="student" type="personinfo"/>
+<xs:element name="member" type="personinfo"/>
+
+<xs:complexType name="personinfo">
+  <xs:sequence>
+    <xs:element name="firstname" type="xs:string"/>
+    <xs:element name="lastname" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+```
+
+##### 可以通过继承现有元素创建新元素
+
+```xml
+<xs:element name="employee" type="fullpersoninfo"/>
+
+<xs:complexType name="personinfo">
+  <xs:sequence>
+    <xs:element name="firstname" type="xs:string"/>
+    <xs:element name="lastname" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="fullpersoninfo">
+  <xs:complexContent>
+    <xs:extension base="personinfo">
+      <xs:sequence>
+        <xs:element name="address" type="xs:string"/>
+        <xs:element name="city" type="xs:string"/>
+        <xs:element name="country" type="xs:string"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+```
+
+##### XSD 仅含文本复合元素
+
+```xml
+<shoesize country="france">35</shoesize>
+
+<xs:element name="shoesize" type="shoetype"/>
+
+<xs:complexType name="shoetype">
+  <xs:simpleContent>
+    <xs:extension base="xs:integer">
+      <xs:attribute name="country" type="xs:string" />
+    </xs:extension>
+  </xs:simpleContent>
+</xs:complexType>
+```
+
+##### 带有混合内容的复合类型
+
+```xml
+<letter>
+Dear Mr.<name>John Smith</name>.
+Your order <orderid>1032</orderid>
+will be shipped on <shipdate>2001-07-13</shipdate>.
+</letter>
+
+<xs:element name="letter">
+  <xs:complexType mixed="true">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="orderid" type="xs:positiveInteger"/>
+      <xs:element name="shipdate" type="xs:date"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+<xs:element name="letter" type="lettertype"/>
+
+<xs:complexType name="lettertype" mixed="true">
+  <xs:sequence>
+    <xs:element name="name" type="xs:string"/>
+    <xs:element name="orderid" type="xs:positiveInteger"/>
+    <xs:element name="shipdate" type="xs:date"/>
+  </xs:sequence>
+</xs:complexType>
+```
+
+#### 指示器
+
+用来控制文档中元素的使用方式。
+
+##### Order 指示器
+
+* <all> 指示器规定子元素可以按照任意顺序出现，且每个子元素必须只出现一次
+* <choice> 指示器规定可出现某个子元素或者可出现另外一个子元素（非此即彼）
+* <sequence> 规定子元素必须按照特定的顺序出现
+
+##### Occurrence 指示器
+
+* <maxOccurs> 指示器可规定某个元素可出现的最大次数
+* <minOccurs> 指示器可规定某个元素能够出现的最小次数
+
+```xml
+<xs:element name="person">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="full_name" type="xs:string"/>
+      <xs:element name="child_name" type="xs:string"
+      maxOccurs="10" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+```
+
+##### Group 指示器
+
+Group 指示器用于定义相关的数批元素。
+
+```xml
+<xs:group name="persongroup">
+  <xs:sequence>
+    <xs:element name="firstname" type="xs:string"/>
+    <xs:element name="lastname" type="xs:string"/>
+    <xs:element name="birthday" type="xs:date"/>
+  </xs:sequence>
+</xs:group>
+
+<xs:element name="person" type="personinfo"/>
+
+<xs:complexType name="personinfo">
+  <xs:sequence>
+    <xs:group ref="persongroup"/>
+    <xs:element name="country" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+```
+
+##### 属性组
+
+属性组通过 attributeGroup 声明来进行定义：
+
+```xml
+<xs:attributeGroup name="personattrgroup">
+  <xs:attribute name="firstname" type="xs:string"/>
+  <xs:attribute name="lastname" type="xs:string"/>
+  <xs:attribute name="birthday" type="xs:date"/>
+</xs:attributeGroup>
+
+<xs:element name="person">
+  <xs:complexType>
+    <xs:attributeGroup ref="personattrgroup"/>
+  </xs:complexType>
+</xs:element>
+```
+
+#### XSD any元素
+
+<any> 元素使我们有能力通过未被 schema 规定的元素来拓展 XML 文档
+
+```xml
+<xs:element name="person">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname" type="xs:string"/>
+      <xs:any minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+```
+
+#### anyAttribute 元素
+
+<anyAttribute> 元素使我们有能力通过未被 schema 规定的属性来扩展 XML 文档！
+
+```
+<xs:element name="person">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="firstname" type="xs:string"/>
+      <xs:element name="lastname" type="xs:string"/>
+    </xs:sequence>
+    <xs:anyAttribute/>
+  </xs:complexType>
+</xs:element>
+```
+
+#### 元素替换
+
+```xml
+<xs:element name="name" type="xs:string"/>
+<xs:element name="navn" substitutionGroup="name"/>
+```
+
+"name" 元素是主元素，而 "navn" 元素可替代 "name" 元素。
+
+```xml
+<xs:element name="shiporder">
+	<xs:conplexType>
+    	<xs:seuence>
+        
+        </xs:seuence>
+    </xs:conplexType>	
+</xs:element>
+```
+

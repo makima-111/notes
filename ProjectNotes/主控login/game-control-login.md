@@ -464,6 +464,7 @@ ALTER TABLE user_base
 ADD tracker_name character varying(256);
 ALTER TABLE user_base
 ADD adid character varying(64);
+ALTER TABLE user_base ALTER COLUMN tracker_name TYPE text;
 ```
 
 #### 4、2021/05/17 海外数据库更新配置

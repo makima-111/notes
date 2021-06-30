@@ -92,6 +92,27 @@
 
 * git rebase 将分支提交历史整理为一条直线
 
+### 7、subtree 子树
+
+子树允许子项目包含在主项目的子目录中，可选择包含子项目的整个历史。
+
+不要将子树与用于相同任务的子模块混淆。与子模块不同，子树不需要任何特殊结构（如 .gitmodules 文件或 gitlinks）出现在您的存储库中，并且不会强迫存储库的最终用户做任何特殊的事情或了解子树的工作原理。子树只是一个子目录，可以以任何您想要的方式与您的项目一起提交、分支和合并。
+
+它们也不应与使用子树合并策略相混淆。主要区别在于，除了将另一个项目合并为一个子目录之外，您还可以从您的项目中提取子目录的整个历史记录并使其成为一个独立的项目。与子树合并策略不同，您可以在这两个操作之间来回交替。如果独立库更新，您可以自动将更改合并到您的项目中；如果您更新项目中的库，您可以再次“拆分”更改并将它们合并回库项目。
+
+例如，如果您为一个应用程序创建的库最终在其他地方有用，您可以提取其整个历史并将其发布为自己的 git 存储库，而不会意外地混合应用程序项目的历史记录。
+
+```shell
+git subtree add   -P <prefix> <commit>
+git subtree add   -P <prefix> <repository> <ref>
+git subtree pull  -P <prefix> <repository> <ref>
+git subtree push  -P <prefix> <repository> <ref>
+git subtree merge -P <prefix> <commit>
+git subtree split -P <prefix> [OPTIONS] [<commit>]
+```
+
+
+
 ## 五、标签管理
 
 * tag相当于为特定的commitId起一个别名，方便使用。
