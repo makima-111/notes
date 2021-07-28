@@ -29,6 +29,8 @@ copy 和\copy命令效果类似，只不过执行权限不通，使用\copy即�
 \COPY (SELECT * FROM ads_channels ) TO '/home/yinghui.zhang/ads_channels_file.csv' csv
 
 \COPY (SELECT * FROM ads_api_authorize ) TO '/home/yinghui.zhang/ads_api_authorize_file.csv' csv
+
+\COPY (SELECT * FROM login_base_config ORDER BY ID ) TO '/home/yinghui.zhang/login_base_config_file_inside.csv' csv
 ```
 
 
